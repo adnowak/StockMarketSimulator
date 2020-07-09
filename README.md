@@ -1,7 +1,7 @@
 # stockMarketSimulator
 A program which simulates simplified version of stock market
 
-I made this program to pass a "Programming Basics" coursus in the first semester of my studies.
+I made this program to pass a "Programming Basics" course in the first semester of my studies.
 The program is made in Java, implements Observer and MVC design patterns.
 
 The program simulates a market with random stocks, which change their price randomly.
