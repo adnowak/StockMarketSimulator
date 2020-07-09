@@ -7,23 +7,33 @@ import projectObserver.*;
 
 public class Share implements Subject
 {
-	private ArrayList<Observer> observersList = new ArrayList<Observer>();
+	private ArrayList<Observer> observersList = new ArrayList();
 	
-	private ArrayList<Integer> historicalQuotationsList = new ArrayList<Integer>(); 
+	private ArrayList<Integer> historicalQuotationsList = new ArrayList();
 	private int priceInGrosze;
 	private int amountOfSharesInTheMarket;
-	private int companysPolicysFactor;
-	private String companysShortName = "";
+	private int companyPolicyFactor;
+	private String companyShortName = "";
 	int influenceOfManagement = 5;
 	
 	public ArrayList<Integer> getHistoricalQuotationsList() 
 	{
 		return historicalQuotationsList;
 	}
+
+
+	public Share()
+	{
+		companyShortName = setRandomName();
+		companyPolicyFactor = influenceOfManagement-new Random().nextInt(2*influenceOfManagement+1);
+		priceInGrosze = new Random().nextInt(9900)+100;
+		historicalQuotationsList.add(priceInGrosze);
+		amountOfSharesInTheMarket = 1000*(new Random().nextInt(19000)+1000);
+	}
 	
 	public boolean equals(Object share)
 	{
-		if(((Share)share).getCompanysShortName().equals(companysShortName))
+		if(((Share)share).getCompanyShortName().equals(companyShortName))
 		{
 			return true;
 		}
@@ -35,7 +45,7 @@ public class Share implements Subject
 	
 	public int hashCode()
 	{
-		return this.companysShortName.hashCode();
+		return this.companyShortName.hashCode();
 	}
 
 	public int getPriceInGrosze() 
@@ -48,9 +58,9 @@ public class Share implements Subject
 		return amountOfSharesInTheMarket;
 	}
 
-	public String getCompanysShortName() 
+	public String getCompanyShortName()
 	{
-		return companysShortName;
+		return companyShortName;
 	}
 	
 	private static String setRandomName()
@@ -66,7 +76,7 @@ public class Share implements Subject
 		{
 			for(Share share : ProjectObserver.getMarket().getSharesAtTheMarketList())
 			{
-				if(shortName.equals(share.getCompanysShortName()))
+				if(shortName.equals(share.getCompanyShortName()))
 				{
 					shortName = setRandomName();
 				}
@@ -74,38 +84,20 @@ public class Share implements Subject
 		}
 		return shortName;
 	}
-
-	public Share()
-	{
-		Random rnd = new Random();
-		//losowanie nazwy
-		companysShortName = setRandomName();
-		
-		//losowanie wspolczynnika polityki spolki
-		companysPolicysFactor = influenceOfManagement-rnd.nextInt(2*influenceOfManagement+1);
-		
-		//losowanie ceny poczatkowej
-		priceInGrosze = rnd.nextInt(9900)+100;//aby zwiekszyc realnosc cena poczatkowa bedzie z przedzialu od 1zł do 100zł
-		historicalQuotationsList.add(priceInGrosze);
-		
-		//losowanie ilosci akcji w obiegu
-		amountOfSharesInTheMarket = 1000*(rnd.nextInt(19000)+1000);//aby zwiekszyc realnosc, ilosc akcji w obiegu bedzie podzielna przez 1000 i z przedzialu od 1.000.000 do 20.000.000
-	}
 	
 	private void setRandomManagementChange()
 	{
 		Random rnd = new Random();
-		if((rnd.nextDouble()*100)<((10.0-(double)this.companysPolicysFactor)/8.0))
+		if((rnd.nextDouble()*100)<((10.0-(double)this.companyPolicyFactor)/8.0))
 		{
-			this.companysPolicysFactor = influenceOfManagement-rnd.nextInt(2*influenceOfManagement+1);
+			this.companyPolicyFactor = influenceOfManagement-rnd.nextInt(2*influenceOfManagement+1);
 		}
 	}
 	
 	public void nextTurn()
 	{
 		setRandomManagementChange();
-		Random rnd = new Random();
-		priceInGrosze = (priceInGrosze*(rnd.nextInt(500)+9756+companysPolicysFactor));
+		priceInGrosze = (priceInGrosze*(new Random().nextInt(500)+9756+ companyPolicyFactor));
 		
 		priceInGrosze = new Integer((int) Math.round(new Double(priceInGrosze)/10000));
 		
@@ -118,7 +110,7 @@ public class Share implements Subject
 		int zlotys = (priceInGrosze-(priceInGrosze%100))/100;
 		int groszes = priceInGrosze-100*zlotys;
 		String cena = new Integer(zlotys).toString() + "zł " + new Integer(groszes).toString()+"gr";
-		return companysShortName+" Cena:"+cena+" Ilosc akcji w obiegu:"+amountOfSharesInTheMarket + " Wspolczynnik polityki spolki:"+companysPolicysFactor;
+		return companyShortName +" Cena:"+cena+" Ilosc akcji w obiegu:"+amountOfSharesInTheMarket + " Wspolczynnik polityki spolki:"+ companyPolicyFactor;
 	}
 
 	@Override
@@ -138,7 +130,7 @@ public class Share implements Subject
 	{
 		for(Observer observer : observersList)
 		{
-			observer.update(new SharesPublicData(this.getCompanysShortName(), this.getPriceInGrosze()));
+			observer.update(new SharesPublicData(this.getCompanyShortName(), this.getPriceInGrosze()));
 		}
 	}
 }

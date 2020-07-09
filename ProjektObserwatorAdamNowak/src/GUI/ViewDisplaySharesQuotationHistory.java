@@ -67,7 +67,7 @@ public class ViewDisplaySharesQuotationHistory extends View
 		GUI.getMainPanelsHeader().add(chooseButton);
 		if(recentlyDisplayedShare!=null)
 		{
-			GUI.getQuotationsHistoryTextField().setText(recentlyDisplayedShare.getCompanysShortName());
+			GUI.getQuotationsHistoryTextField().setText(recentlyDisplayedShare.getCompanyShortName());
 		}
 		GUI.getMainPanel().add(GUI.getMainPanelsHeader(), BorderLayout.NORTH);
 		GUI.getMainPanel().add(graphPanel, BorderLayout.CENTER);

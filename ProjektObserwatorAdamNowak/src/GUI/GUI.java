@@ -8,7 +8,7 @@ import controller.Controller;
 
 public class GUI 
 {
-	private static View recentView ;
+	private static View recentView;
 	
 	private static JFrame frame = new JFrame();
 	private static JPanel navigationPanel = new JPanel();

@@ -10,7 +10,7 @@ public class Market implements Subject
 	private LocalDateTime now = LocalDateTime.of(LocalDateTime.now().getYear()+20, LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 8, 0);
 	private int hourOfNow=8, minuteOfNow=0;
 	private ArrayList<Share> sharesAtTheMarketList ;
-	private ArrayList<Observer> observersList = new ArrayList<Observer>();
+	private ArrayList<Observer> observersList = new ArrayList();
 	
 	public ArrayList<Share> getSharesAtTheMarketList() 
 	{
@@ -35,10 +35,8 @@ public class Market implements Subject
 	public void nextTurn()
 	{
 		for(Share share : sharesAtTheMarketList)
-		{
 			share.nextTurn();
-		}
-		
+
 		setNewTime();
 		notifyObservers();
 	}
@@ -69,9 +67,7 @@ public class Market implements Subject
 	public void createShares()
 	{
 		for(int i=0; i<50; i++)
-		{
 			sharesAtTheMarketList.add(new Share());
-		}
 	}
 
 	@Override
@@ -90,8 +86,6 @@ public class Market implements Subject
 	public void notifyObservers() 
 	{
 		for(Observer observer : observersList)
-		{
 			observer.update();
-		}
 	}
 }
